@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de T.I. - Central de Serviços Compartilhados Neural</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        /* Estilos gerais - PALETA DE CORES */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #096f8e;
+            background: linear-gradient(135deg, #096f8e, #075971);
+            color: #f0f0f0;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            /* Desativa o scroll inicialmente pela capa */
+        }
+
+        /* --- ESTILOS DA CAPA DESLIZANTE --- */
+        #cover-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://i.ibb.co/1Yzb7KP3/Captura-de-tela-2025-07-04-104849.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: transform 0.8s ease-in-out;
+        }
+
+        #cover-page.hidden {
+            transform: translateY(-100%);
+        }
+
+        #cover-page h1 {
+            font-size: 3.5em;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            margin: 0;
+            border-bottom: 3px solid white;
+            padding-bottom: 10px;
+        }
+
+        #enter-button {
+            position: absolute;
+            bottom: 50px;
+            padding: 15px 30px;
+            border: 2px solid white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #enter-button:hover {
+            background-color: white;
+            color: #075971;
+        }
+
+        #enter-button i {
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-8px);
+            }
+
+            60% {
+                transform: translateY(-4px);
+            }
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #075971;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-bottom: 5px solid #0ca5c7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-link img {
+            height: 80px;
+            width: auto;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        .header-title p {
+            margin: 0;
+            color: #cccccc;
+        }
+
+        .logo-spacer {
+            width: 220px;
+        }
+
+        /* Navegação por Abas */
+        nav {
+            background-color: #075971;
+            padding: 0 10px;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .tab-button {
+            background-color: transparent;
+            border: none;
+            color: #f0f0f0;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s, color 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background-color: #0ca5c7;
+            color: white;
+        }
+
+        .tab-button.active {
+            background-color: #096f8e;
+            color: white;
+            border-bottom: 3px solid white;
+        }
+
+        .tab-button i {
+            margin-right: 8px;
+        }
+
+        /* Conteúdo principal e das abas */
+        main {
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilo dos Cards */
+        .card {
+            background: linear-gradient(135deg, #075971, #064b5f);
+            border-radius: 8px;
+            border: 1px solid #0ca5c7;
+            box-shadow: none;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.5s, opacity 0.5s;
+            opacity: 0;
+            transform: translateY(30px);
+            /* Para animação de entrada */
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(12, 165, 199, 0.5);
+        }
+
+        .card-header {
+            background-color: transparent;
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #0ca5c7;
+        }
+
+        .card-header i {
+            margin-right: 15px;
+        }
+
+        .card-body {
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .card-body h3 {
+            color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            background-color: #096f8e;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-top: none;
+            font-size: 1.2em;
+        }
+
+        .card-body h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .card-body h3 i {
+            margin-right: 10px;
+            color: #f0f0f0;
+        }
+
+        /* Grade de Ferramentas */
+        .tools-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 10px 0 20px 0;
+        }
+
+        .tool-item {
+            background: linear-gradient(135deg, #096f8e, #08637e);
+            border: 1px solid #0ca5c7;
+            border-radius: 8px;
+            width: 160px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+        }
+
+        .tool-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 20px rgba(12, 165, 199, 0.5);
+        }
+
+        .tool-item:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .tool-item i {
+            font-size: 3.5em;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .tool-item .tool-name {
+            margin: 0;
+            font-weight: bold;
+            color: #f0f0f0;
+        }
+
+        /* Estilo para Sub-itens do GLPI */
+        .sub-tools-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            padding: 15px 0 10px 0;
+            border-top: 1px solid #0ca5c7;
+            margin-top: 20px;
+        }
+
+        .sub-tool-item {
+            background-color: #096f8e;
+            border: 1px solid #0ca5c7;
+            border-radius: 8px;
+            width: 120px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .sub-tool-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .sub-tool-item i {
+            font-size: 2.5em;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .sub-tool-item .tool-name {
+            margin: 0;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #f0f0f0;
+        }
+
+        /* Grade para Equipes, Processos e Portais */
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .team-item {
+            background: linear-gradient(135deg, #096f8e, #08637e);
+            border: 1px solid #0ca5c7;
+            border-radius: 8px;
+            flex: 1 1 250px;
+            max-width: 300px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .team-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 20px rgba(12, 165, 199, 0.5);
+        }
+
+        .team-item:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .team-item i {
+            font-size: 3em;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .team-item h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: white;
+            padding-top: 10px;
+        }
+
+        .team-item p {
+            font-size: 0.9em;
+            color: #cccccc;
+            line-height: 1.5;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        /* Etiqueta de Processo */
+        .process-tag {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: #0ca5c7;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .organogram-image {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+
+        /* Estilos do Pop-up (Modal) com Efeito de Vidro */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeInModal 0.4s;
+        }
+
+        .modal-content {
+            background-color: rgba(7, 89, 113, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid rgba(12, 165, 199, 0.5);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 700px;
+            position: relative;
+            animation: slideIn 0.5s;
+        }
+
+        @keyframes fadeInModal {
+            from {
+                background-color: rgba(0, 0, 0, 0);
+            }
+
+            to {
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                margin-top: -50px;
+                opacity: 0
+            }
+
+            to {
+                margin-top: 10%;
+                opacity: 1
+            }
+        }
+
+        .modal .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 38px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+        }
+
+        .modal .close-button:hover,
+        .modal .close-button:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #modalTitle {
+            margin-top: 0;
+            color: white;
+        }
+
+        #modalContent {
+            line-height: 1.7;
+        }
+
+        #modalContent a {
+            color: #0ca5c7;
+            text-decoration: underline;
+        }
+
+        #modalContent a:hover {
+            color: white;
+        }
+
+        #modalContent ul {
+            padding-left: 25px;
+            margin-top: 10px;
+        }
+
+        #modalContent li {
+            margin-bottom: 8px;
+        }
+
+        #modalContent table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        #modalContent th,
+        #modalContent td {
+            border: 1px solid #0ca5c7;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        #modalContent th {
+            background-color: #096f8e;
+        }
+
+        #modalContent code {
+            background-color: #004c5a;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Barra Lateral com Efeito de Vidro */
+        .sidebar {
+            height: 100%;
+            width: 280px;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background-color: rgba(7, 89, 113, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: 0.5s;
+            transform: translateX(-100%);
+            padding-top: 60px;
+            border-right: 3px solid #0ca5c7;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar .sidebar-item a,
+        .sidebar .submenu a {
+            padding: 10px 15px 10px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #cccccc;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar .sidebar-item>a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sidebar a:hover {
+            color: #ffffff;
+            background-color: #096f8e;
+        }
+
+        .sidebar .submenu {
+            list-style: none;
+            padding-left: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .sidebar .sidebar-item.active .submenu {
+            max-height: 500px;
+        }
+
+        .sidebar .sidebar-item a .fa-whatsapp {
+            color: #25D366;
+        }
+
+        .open-btn {
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            padding: 0 15px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Estilos da Barra de Busca */
+        .search-bar-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cccccc;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 25px;
+            border: 1px solid #0ca5c7;
+            background-color: #096f8e;
+            color: #f0f0f0;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .search-input::placeholder {
+            color: #cccccc;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: white;
+        }
+
+        /* Rodapé */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #075971;
+            border-top: 3px solid #0ca5c7;
+            font-size: 0.9em;
+            color: #cccccc;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CAPA DESLIZANTE -->
+    <div id="cover-page">
+        <h1>Manual de T.I.</h1>
+        <div id="enter-button">
+            <i class="fas fa-chevron-up"></i>
+            <span>ENTRAR NO MANUAL</span>
+        </div>
+    </div>
+
+    <!-- Estrutura da Barra Lateral -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="#">
+                    <i class="fab fa-whatsapp"></i> Grupos de Trabalho
+                </a>
+                <ul class="submenu">
+                    <li><a href="#" onclick="openGroupModal('grupoGeral'); return false;">Grupo Geral TI/GA</a></li>
+                    <li><a href="#" onclick="openGroupModal('grupoLideres'); return false;">Grupo de Lideres</a></li>
+                    <li><a href="#" onclick="openGroupModal('eventosCriticos'); return false;">Eventos Criticos</a></li>
+                    <li><a href="#" onclick="openGroupModal('suporteN1'); return false;">Suporte N1</a></li>
+                    <li><a href="#" onclick="openGroupModal('suporteN2'); return false;">Suporte N2</a></li>
+                    <li><a href="#" onclick="openGroupModal('serviceDeskN1'); return false;">ServiceDesk N1</a></li>
+                    <li><a href="#" onclick="openGroupModal('gestaoAcessos'); return false;">Gestão de Acessos</a></li>
+                    <li><a href="#" onclick="openGroupModal('processosGLPI'); return false;">Processos GLPI</a></li>
+                    <li><a href="#" onclick="openGroupModal('fluxoHO'); return false;">Fluxo Home Office</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+    <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="open-btn" onclick="openSidebar()">&#9776;</button>
+            <a href="#" class="logo-link" onclick="openTab(event, 'inicio'); return false;">
+                <img src="https://i.ibb.co/rfR0ff5r/image-Photoroom.png" alt="Logo Neural Serviços Conectados">
+            </a>
+        </div>
+        <div class="header-title">
+            <h1>Manual de T.I.</h1>
+            <p>Central de Serviços Compartilhados - Neural</p>
+        </div>
+        <div class="logo-spacer"></div>
+    </header>
+
+    <nav>
+        <button class="tab-button" onclick="openTab(event, 'inicio')"><i class="fas fa-home"></i> Início</button>
+        <button class="tab-button" onclick="openTab(event, 'ferramentas')"><i class="fas fa-tools"></i>
+            Ferramentas</button>
+        <button class="tab-button" onclick="openTab(event, 'processos')"><i class="fas fa-project-diagram"></i>
+            Processos</button>
+        <button class="tab-button" onclick="openTab(event, 'organograma')"><i class="fas fa-sitemap"></i>
+            Organograma</button>
+        <button class="tab-button" onclick="openTab(event, 'sistemas-operacoes')"><i class="fas fa-network-wired"></i>
+            Sistemas de Operações</button>
+    </nav>
+
+    <main>
+        <div id="inicio" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-rocket"></i>
+                    <h2>Boas-vindas à Equipe de Tecnologia!</h2>
+                </div>
+                <div class="card-body">
+                    <p>Seja bem-vindo(a)! Este manual foi criado para ser seu guia de referência no dia a dia do nosso
+                        departamento. Aqui você encontrará informações essenciais sobre nossas ferramentas, processos e
+                        a estrutura da nossa equipe. Nosso objetivo é que você se sinta integrado e produtivo o mais
+                        rápido possível.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-sitemap"></i>
+                    <h2>Nossa Estrutura Organizacional</h2>
+                </div>
+                <div class="card-body">
+                    <p style="text-align: center; margin-bottom: 25px;">O time de Tecnologia faz parte da
+                        <strong>Central de Serviços Compartilhados - Neural</strong>. Nossa equipe é dividida em dois
+                        níveis de suporte para garantir um atendimento ágil e especializado:</p>
+                    <h3><i class="fas fa-headset"></i> Suporte N1 e Gestão de Acessos (Primeiro Nível)</h3>
+                    <div class="team-grid">
+                        <div class="team-item" onclick="openStructureModal('helpdesk')"><i class="fas fa-headset"></i>
+                            <h4>Helpdesk</h4>
+                            <p>Atendimento remoto para solução de problemas de baixa e média complexidade.</p>
+                        </div>
+                        <div class="team-item" onclick="openStructureModal('fieldservice')"><i
+                                class="fas fa-toolbox"></i>
+                            <h4>Fieldservice</h4>
+                            <p>Suporte técnico presencial para estações de trabalho, hardware e periféricos.</p>
+                        </div>
+                        <div class="team-item" onclick="openStructureModal('servicedesk')"><i
+                                class="fas fa-concierge-bell"></i>
+                            <h4>Servicedesk</h4>
+                            <p>Ponto único de contato para registrar, priorizar e encaminhar todas as solicitações de
+                                TI.</p>
+                        </div>
+                        <div class="team-item" onclick="openStructureModal('ga')"><i class="fas fa-user-shield"></i>
+                            <h4>G.A (Gestão de Acessos)</h4>
+                            <p>Responsável pela criação, alteração e revogação de acessos a sistemas e recursos da
+                                empresa.</p>
+                        </div>
+                    </div>
+                    <h3><i class="fas fa-cogs"></i> Suporte N2 (Segundo Nível)</h3>
+                    <div class="team-grid">
+                        <div class="team-item" onclick="openStructureModal('infra')"><i class="fas fa-server"></i>
+                            <h4>Infraestrutura de TI</h4>
+                            <p>Gerencia e mantém os ativos físicos de TI, como servidores, storages e datacenters.</p>
+                        </div>
+                        <div class="team-item" onclick="openStructureModal('redes')"><i
+                                class="fas fa-network-wired"></i>
+                            <h4>Redes e Sistemas</h4>
+                            <p>Responsável pela arquitetura, manutenção e segurança das redes de dados e sistemas
+                                operacionais.</p>
+                        </div>
+                        <div class="team-item" onclick="openStructureModal('secinfo')"><i class="fas fa-shield-alt"></i>
+                            <h4>Segurança da Informação</h4>
+                            <p>Garante a confidencialidade, integridade e disponibilidade das informações da empresa.
+                            </p>
+                        </div>
+                        <div class="team-item" onclick="openStructureModal('telecom')"><i
+                                class="fas fa-broadcast-tower"></i>
+                            <h4>Telecom</h4>
+                            <p>Responsável pelos serviços de telefonia e todas as formas de comunicação unificada.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ferramentas" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-tools"></i>
+                    <h2>A Jornada de um Colaborador de TI</h2>
+                </div>
+                <div class="card-body">
+                    <p>Bem-vindo(a) à equipe! Sua jornada começa aqui. Para te ajudar a se localizar, organizamos nossas
+                        ferramentas de acordo com as tarefas que você realizará no seu dia a dia. Use a busca abaixo
+                        para encontrar algo específico.</p>
+                    <div class="search-bar-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="ferramentas-search" class="search-input"
+                            onkeyup="filterGrid('ferramentas-search', '#ferramentas .tool-item, #ferramentas .sub-tool-item', '.tool-name', 'block')"
+                            placeholder="Buscar ferramenta...">
+                    </div>
+
+                    <h3>Seu Primeiro Dia: Ponto e Comunicação</h3>
+                    <p>Para começar, você precisa saber como registrar seu ponto e se comunicar com a equipe.</p>
+                    <div class="tools-grid">
+                        <div class="tool-item" onclick="openToolModal('forponto')"><i class="fas fa-clock"></i>
+                            <p class="tool-name">Forponto</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('dponline')"><i class="fas fa-user-clock"></i>
+                            <p class="tool-name">DP Online</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('outlook')"><i
+                                class="fas fa-envelope-open-text"></i>
+                            <p class="tool-name">Outlook</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('discord')"><i class="fab fa-discord"></i>
+                            <p class="tool-name">Discord</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('whatsapp')"><i class="fab fa-whatsapp"></i>
+                            <p class="tool-name">WhatsApp</p>
+                        </div>
+                    </div>
+
+                    <h3>Ferramentas de Produtividade</h3>
+                    <p>O essencial para criar documentos, planilhas e apresentações no dia a dia.</p>
+                    <div class="tools-grid">
+                        <div class="tool-item" onclick="openToolModal('office')"><i class="fas fa-file-word"></i>
+                            <p class="tool-name">Pacote Office</p>
+                        </div>
+                    </div>
+
+                    <h3>Atendendo a um Chamado: O Ciclo de Suporte</h3>
+                    <p>Tudo começa com um chamado. Use estas ferramentas para registrar, acessar o usuário e resolver o
+                        problema.</p>
+                    <div class="tools-grid">
+                        <div class="tool-item" onclick="openToolModal('glpi')"><i class="fas fa-ticket-alt"></i>
+                            <p class="tool-name">GLPI</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('anydesk')"><i class="fas fa-desktop"></i>
+                            <p class="tool-name">Anydesk</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('uvnc')"><i class="fas fa-laptop-house"></i>
+                            <p class="tool-name">UVNC</p>
+                        </div>
+                    </div>
+
+                    <h4>Módulos Principais do GLPI</h4>
+                    <div class="sub-tools-grid">
+                        <div class="sub-tool-item" onclick="openToolModal('glpi')"><i class="fas fa-tasks"></i>
+                            <p class="tool-name">Registro de Atividades</p>
+                        </div>
+                        <div class="sub-tool-item" onclick="openToolModal('glpi')"><i class="fas fa-sync-alt"></i>
+                            <p class="tool-name">Gestão de Problemas</p>
+                        </div>
+                        <div class="sub-tool-item" onclick="openToolModal('glpi')"><i class="fas fa-house-user"></i>
+                            <p class="tool-name">Fluxo Home Office</p>
+                        </div>
+                    </div>
+
+                    <h3>Mantendo a Ordem: Controles e Documentação</h3>
+                    <p>A organização é chave. Estas são as ferramentas para controlar nossos ativos e centralizar nosso
+                        conhecimento.</p>
+                    <div class="tools-grid">
+                        <div class="tool-item" onclick="openToolModal('ceti')"><i class="fas fa-laptop-code"></i>
+                            <p class="tool-name">CETI</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('sharepoint')"><i class="fab fa-microsoft"></i>
+                            <p class="tool-name">SharePoint</p>
+                        </div>
+                    </div>
+
+                    <h3>Ferramentas de Administração e Monitoramento</h3>
+                    <p>Para as tarefas mais complexas, como monitoramento, segurança e gerenciamento de infraestrutura.
+                    </p>
+                    <div class="tools-grid">
+                        <div class="tool-item" onclick="openToolModal('grafana')"><i class="fas fa-chart-area"></i>
+                            <p class="tool-name">Grafana</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('sophos')"><i class="fas fa-user-secret"></i>
+                            <p class="tool-name">VPN Sophos</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('mav')"><i class="fas fa-shield-virus"></i>
+                            <p class="tool-name">Painel MAV</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('ad')"><i class="fas fa-address-book"></i>
+                            <p class="tool-name">Active Directory</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('hyperv')"><i class="fas fa-layer-group"></i>
+                            <p class="tool-name">Hyper-V</p>
+                        </div>
+                    </div>
+
+                    <h3>Ferramentas do Gestor</h3>
+                    <p>Ferramentas exclusivas para a liderança acompanhar e gerenciar o ponto da equipe.</p>
+                    <div class="tools-grid">
+                        <div class="tool-item" onclick="openToolModal('forpontoapp')"><i class="fas fa-user-tie"></i>
+                            <p class="tool-name">Forponto App</p>
+                        </div>
+                        <div class="tool-item" onclick="openToolModal('dponline')"><i class="fas fa-user-clock"></i>
+                            <p class="tool-name">DP Online</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="processos" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-project-diagram"></i>
+                    <h2>Nossos Processos de TI</h2>
+                </div>
+                <div class="card-body">
+                    <p>Utilize a busca para filtrar os processos por palavra-chave.</p>
+                    <div class="search-bar-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="processos-search" class="search-input"
+                            onkeyup="filterGrid('processos-search', '#processos .team-item', 'h4', 'flex')"
+                            placeholder="Buscar processo...">
+                    </div>
+                    <div class="team-grid">
+                        <div class="team-item" onclick="openProcessModal('gestaoChamados')">
+                            <div class="process-tag">GLPI</div><i class="fas fa-tasks"></i>
+                            <h4>Abertura e Gestão de Chamados</h4>
+                            <p>Como um chamado é aberto, categorizado, priorizado, atribuído e resolvido.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('solicitacaoEquipamentos')">
+                            <div class="process-tag">Formulários GLPI</div><i class="fas fa-box-open"></i>
+                            <h4>Solicitação de Equipamentos</h4>
+                            <p>Fluxo para solicitar novos hardwares (computadores, monitores, etc.) ou periféricos.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('gestaoAcessosProcesso')">
+                            <div class="process-tag">GLPI</div><i class="fas fa-key"></i>
+                            <h4>Gestão de Acessos</h4>
+                            <p>Procedimento para solicitar, alterar ou revogar acessos a sistemas e pastas de rede.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('onboarding')">
+                            <div class="process-tag">Formulários GLPI</div><i class="fas fa-user-plus"></i>
+                            <h4>Onboarding de Colaboradores</h4>
+                            <p>Checklist de TI para a chegada de um novo funcionário (contas, equipamento, etc.).</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('offboarding')">
+                            <div class="process-tag">Formulários GLPI</div><i class="fas fa-user-minus"></i>
+                            <h4>Offboarding de Colaboradores</h4>
+                            <p>Checklist de TI para o desligamento de um funcionário (bloqueio de acessos, equipamento,
+                                etc.).</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('eventosCriticosProcesso')">
+                            <div class="process-tag">Grupos Whatsapp</div><i class="fas fa-bullhorn"></i>
+                            <h4>Eventos Críticos</h4>
+                            <p>Grupo de reports para incidentes críticos e massivos que envolvem a liderança.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('rfp')">
+                            <div class="process-tag">Formulários GLPI</div><i class="fas fa-file-signature"></i>
+                            <h4>Processos de RFP</h4>
+                            <p>Requisição de propostas e cotações para novas aquisições e serviços de tecnologia.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('gestaoProblemas')">
+                            <div class="process-tag">GLPI</div><i class="fas fa-sync-alt"></i>
+                            <h4>Gestão de Problemas</h4>
+                            <p>Análise de incidentes recorrentes para identificar e solucionar a causa raiz.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('fluxoHOProcesso')">
+                            <div class="process-tag">GLPI</div><i class="fas fa-house-user"></i>
+                            <h4>Fluxo de Home Office</h4>
+                            <p>Gestão de equipamentos e acessos para colaboradores em regime de trabalho remoto.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('gmud')">
+                            <div class="process-tag">GLPI</div><i class="fas fa-exchange-alt"></i>
+                            <h4>Gestão de Mudanças (GMUD)</h4>
+                            <p>Controle de mudanças emergenciais ou programadas em nosso ambiente tecnológico.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('gestaoFornecedores')">
+                            <div class="process-tag">Formulários GLPI</div><i class="fas fa-handshake"></i>
+                            <h4>Gestão de Fornecedores</h4>
+                            <p>Gerenciamento e avaliação de fornecedores de produtos e serviços de tecnologia.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('baseConhecimento')">
+                            <div class="process-tag">GLPI</div><i class="fas fa-book-open"></i>
+                            <h4>Base de Conhecimentos</h4>
+                            <p>Processo de criação e manutenção de documentação para a equipe de TI.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('reembolso')">
+                            <div class="process-tag">Paytrack</div><i class="fas fa-money-bill-wave"></i>
+                            <h4>Solicitação de Reembolso</h4>
+                            <p>Fluxo para solicitar reembolso de despesas de deslocamento via Paytrack.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('lgpd')">
+                            <div class="process-tag">Portal Elo</div><i class="fas fa-user-shield"></i>
+                            <h4>LGPD</h4>
+                            <p>Processos de Segurança da Informação alinhados à Lei Geral de Proteção de Dados.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('gestaoEscalas')">
+                            <div class="process-tag">Extensão Escalas</div><i class="fas fa-calendar-alt"></i>
+                            <h4>Gestão de Escalas</h4>
+                            <p>Define a escala de trabalho dos colaboradores para fins de semana e feriados.</p>
+                        </div>
+                        <div class="team-item" onclick="openProcessModal('ocorrenciaPonto')">
+                            <div class="process-tag">DP Online</div><i class="fas fa-user-check"></i>
+                            <h4>Análise de Ocorrência de Pontos</h4>
+                            <p>Abertura de chamados para análise de ocorrências nas marcações de ponto. A tratativa é
+                                realizada pelo gestor.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="organograma" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-sitemap"></i>
+                    <h2>Estrutura da Equipe de T.I.</h2>
+                </div>
+                <div class="card-body">
+                    <img src="https://i.ibb.co/MDD2j13P/ORGANOGRAMA.png" alt="ORGANOGRAMA" border="0"
+                        class="organogram-image">
+                </div>
+            </div>
+        </div>
+        <div id="sistemas-operacoes" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-network-wired"></i>
+                    <h2>Sistemas de Operações</h2>
+                </div>
+                <div class="card-body">
+                    <p style="text-align:center; font-size:1.2em;">Esta seção está em construção e em breve conterá
+                        informações sobre os sistemas essenciais da operação.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Neural Serviços Conectados - Departamento de Tecnologia. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Estrutura do Pop-up (Modal) -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeInfoModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Lógica de Abas, Capa, e Modal
+        const coverPage = document.getElementById('cover-page');
+        const enterButton = document.getElementById('enter-button');
+        let coverHidden = false;
+
+        function hideCover() {
+            if (coverHidden) return;
+            coverHidden = true;
+            coverPage.classList.add('hidden');
+            document.body.style.overflowY = 'auto';
+            setTimeout(() => { coverPage.style.display = 'none'; }, 800);
+        }
+
+        function openTab(evt, tabName) {
+            let i, tabContent, tabButtons;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) { tabContent[i].classList.remove("active"); }
+            tabButtons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabButtons.length; i++) { tabButtons[i].classList.remove("active"); }
+            setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
+            if (evt.currentTarget.classList.contains('tab-button')) { evt.currentTarget.classList.add("active"); }
+            else { document.querySelector('button[onclick*="\'inicio\'"]').classList.add("active"); }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector('.tab-button').classList.add('active');
+            document.querySelector('.tab-content').classList.add('active');
+
+            enterButton.addEventListener('click', hideCover);
+            window.addEventListener('wheel', hideCover, { once: true });
+            window.addEventListener('scroll', hideCover, { once: true });
+            window.addEventListener('touchstart', hideCover, { once: true });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const cardsToAnimate = document.querySelectorAll('.card');
+            cardsToAnimate.forEach(card => observer.observe(card));
+        });
+
+        const modal = document.getElementById("infoModal"), modalTitle = document.getElementById("modalTitle"), modalContent = document.getElementById("modalContent");
+        function openInfoModal(title, text) { modalTitle.textContent = title; modalContent.innerHTML = text; modal.style.display = "block"; }
+        function closeInfoModal() { modal.style.display = "none"; }
+        window.onclick = (event) => { if (event.target == modal) { closeInfoModal(); } }
+
+        // Dados e função para Ferramentas
+        const toolData = {
+            glpi: { title: "GLPI (ITSM)", text: "Serviço ITSM de gestão de chamados... Acesso: <a href='http://helpdesk/front/central.php' target='_blank'>http://helpdesk/front/central.php</a>" },
+            forponto: { title: "Forponto", text: "Sistema de marcação de pontos...<ul><li><b>Marcação:</b> <a href='http://forpontoweb.elocontactcenter.com.br/ForpontoWeb/MArcacaoPonto.aspx' target='_blank'>Acessar Marcação</a></li><li><b>Consulta:</b> <a href='http://forpontoweb.elocontactcenter.com.br/ForpontoWeb/Login.aspx?ReturnUrl=%2fForpontoWeb%2fconsulta' target='_blank'>Acessar Consulta</a></li></ul>O acesso é liberado pelo DP." },
+            forpontoapp: { title: "Forponto App", text: "Ferramenta gerencial para tratativas de ponto, utilizada exclusivamente por gestores de Departamento." },
+            dponline: { title: "DP Online", text: "Gerenciamento e análise de marcações de ponto... Download no <a href='http://portalelo.elocontactcenter.com.br/' target='_blank'>Portal Elo</a>." },
+            discord: { title: "Discord", text: "Ferramenta de comunicação por voz padrão... Solicite acesso ao servidor: <a href='https://discord.gg/xeGRRgFf' target='_blank'>Convidar Link</a>" },
+            whatsapp: { title: "WhatsApp", text: "Utilizado para comunicação rápida e em grupos de trabalho específicos para alertas e discussões ágeis. Os grupos de trabalho estão na barra lateral." },
+            office: { title: "Pacote Office", text: "Conjunto de aplicações da Microsoft essencial para produtividade, incluindo Word (documentos), Excel (planilhas), PowerPoint (apresentações) e outros. Geralmente pré-instalado nas máquinas corporativas." },
+            outlook: { title: "Outlook", text: "Aplicação Office para e-mail corporativo. A criação do e-mail é feita pelo time de Gestão de Acessos." },
+            anydesk: { title: "Anydesk", text: "Ferramenta de acesso remoto... Download em <a href='https://anydesk.com/pt/downloads/windows' target='_blank'>anydesk.com</a>." },
+            uvnc: { title: "UVNC (UltraVNC)", text: "Ferramenta open-source para acesso remoto interno... Download em <a href='https://uvnc.com/' target='_blank'>uvnc.com</a>." },
+            sharepoint: { title: "SharePoint", text: "Ferramenta cloud da Microsoft para hospedar controles, planilhas e documentos.<ul><li><b>Controle de Estoque:</b> <a href='https://elocontactcenter.sharepoint.com/:x:/r/sites/FILE-CLOUD-GRUPOELO/_layouts/15/Doc.aspx?sourcedoc=%7B1BBEF744-179F-4047-A73B-4B55B72A166A%7D&file=CONTROLE%20DE%20ESTOQUE_GRUPOELO_v.1.xlsx&action=default&mobileredirect=true' target='_blank'>Acessar Planilha</a></li><li><b>Diário de Bordo:</b> <a href='https://elocontactcenter.sharepoint.com/sites/FILE-CLOUD-GRUPOELO/FTPTIELO/Forms/AllItems.aspx?id=%2Fsites%2FFILE%2DCLOUD%2DGRUPOELO%2FFTPTIELO%2FSUPORTE%2FDi%C3%A1rio%20de%20Bordo%2FDi%C3%A1rio%20de%20Bordo%20%2D%20Eventos%20Massivos%20Operacionais&viewid=daec6a24%2D3e42%2D4c68%2Dab7c%2D269099ecb4ba' target='_blank'>Acessar Diário</a></li></ul>" },
+            ceti: { title: "CETI", text: "Ferramenta interna para controle de equipamentos. Acesso pelo <a href='http://portalelo.elocontactcenter.com.br/Equipamentos/Home/index?v=1047512279' target='_blank'>Portal Elo</a>." },
+            grafana: { title: "Grafana", text: "Ferramenta open-source para monitoramento de ambiente.<ul><li><b>São Luís:</b> <a href='http://10.200.1.178:4000/' target='_blank'>Acessar</a></li><li><b>São Paulo:</b> <a href='http://172.16.58.99:3000/' target='_blank'>Acessar</a></li><li><b>Rio de Janeiro:</b> <a href='http://172.18.136.253:5000/?orgId=1' target='_blank'>Acessar</a></li></ul>" },
+            sophos: { title: "VPN Sophos", text: "Client padrão para conexões VPN. Portais para download de arquivos e configuração:<ul><li><b>São Luís:</b> <a href='https://vpnsl.top.srv.br:8443/' target='_blank'>Acessar</a></li><li><b>Rio de Janeiro:</b> <a href='https://172.19.0.13/vpnportal/webpages/login.html' target='_blank'>Acessar</a></li><li><b>São Paulo:</b> <a href='https://172.16.58.9/' target='_blank'>Acessar</a></li></ul>" },
+            mav: { title: "Painel MAV", text: "Painel de gerenciamento do serviço de E-mail, restrito a grupos específicos. <a href='https://painel.supramail.com.br/#home/domain;domain=neuralcsc.com;name=neuralcsc.com' target='_blank'>Acessar Painel</a>" },
+            webmail: { title: "Web Mail", text: "Serviço de e-mail web corporativo. Acesso via <a href='https://webmail.grupoelo.com/' target='_blank'>webmail.grupoelo.com</a>" },
+            ad: { title: "Active Directory", text: "Serviço de diretório da Microsoft para gerenciar usuários, computadores e recursos na rede." },
+            hyperv: { title: "Hyper-V", text: "Ferramenta da Microsoft com interface gráfica para administrar hosts e máquinas virtuais (VMs)." }
+        };
+        function openToolModal(key) { if (toolData[key]) { openInfoModal(toolData[key].title, toolData[key].text); } }
+
+        // Dados e funções para cards clicáveis
+        const structureData = {
+            helpdesk: { title: "Helpdesk", text: "O Helpdesk é a linha de frente do suporte...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            fieldservice: { title: "Fieldservice", text: "A equipe de Fieldservice atua presencialmente...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            servicedesk: { title: "Servicedesk", text: "O Servicedesk funciona como o ponto único de contato...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            ga: { title: "Gestão de Acessos (G.A)", text: "Esta equipe é responsável por todo o ciclo de vida dos acessos...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            infra: { title: "Infraestrutura de TI", text: "Responsável pela espinha dorsal da nossa tecnologia...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            redes: { title: "Redes e Sistemas", text: "Focada na conectividade, esta equipe gerencia switches, roteadores...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            secinfo: { title: "Segurança da Informação", text: "A equipe de Segurança da Informação (SI) é a guardiã dos nossos dados...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            telecom: { title: "Telecom", text: "Especializada em comunicação por voz, a equipe de Telecom gerencia nossa central telefônica...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+        };
+        function openStructureModal(key) { if (structureData[key]) { openInfoModal(structureData[key].title, structureData[key].text); } }
+
+        const processData = {
+            gestaoChamados: { title: "Abertura e Gestão de Chamados", text: "Este processo detalha o ciclo de vida completo de um ticket...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            solicitacaoEquipamentos: { title: "Solicitação de Equipamentos", text: "Define o fluxo para requisitar novos equipamentos...<br><br><a href='https://elocontactcenter.sharepoint.com/:b:/r/sites/FILE-CLOUD-GRUPOELO/FTPTIELO/SUPORTE/Processo%20de%20TI/Novos%20colaboradores%20STAFF.pdf?csf=1&web=1&e=71dU7z' target='_blank'>Acessar Documento do Processo</a>" },
+            gestaoAcessosProcesso: { title: "Gestão de Acessos", text: "Procedimento formal para solicitar, modificar ou revogar permissões...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            onboarding: { title: "Onboarding de Colaboradores", text: "Checklist padronizado que a equipe de TI segue quando um novo colaborador entra na empresa...<br><br><a href='https://elocontactcenter.sharepoint.com/:b:/r/sites/FILE-CLOUD-GRUPOELO/FTPTIELO/SUPORTE/Processo%20de%20TI/Novos%20colaboradores%20STAFF.pdf?csf=1&web=1&e=71dU7z' target='_blank'>Acessar Documento do Processo</a>" },
+            offboarding: { title: "Offboarding de Colaboradores", text: "Checklist de segurança seguido no desligamento de um colaborador...<br><br><a href='https://elocontactcenter.sharepoint.com/:b:/r/sites/FILE-CLOUD-GRUPOELO/FTPTIELO/SUPORTE/Processo%20de%20TI/Novos%20colaboradores%20STAFF.pdf?csf=1&web=1&e=71dU7z' target='_blank'>Acessar Documento do Processo</a>" },
+            eventosCriticosProcesso: { title: "Eventos Críticos", text: "Protocolo de comunicação para incidentes de alto impacto...<br><br><a href='https://elocontactcenter.sharepoint.com/:b:/r/sites/FILE-CLOUD-GRUPOELO/FTPTIELO/SUPORTE/Processo%20de%20TI/Processo%20de%20Atendimento%20a%20Eventos%20Cr%C3%ADticos.pdf?csf=1&web=1&e=4dJsPj' target='_blank'>Acessar Documento do Processo</a>" },
+            rfp: { title: "Processos de RFP", text: "Request for Proposal. Processo formal para aquisição de novos produtos ou serviços...<br><br><a href='https://elocontactcenter.sharepoint.com/:b:/r/sites/FILE-CLOUD-GRUPOELO/FTPTIELO/SUPORTE/Processo%20de%20TI/Processo%20de%20resposta%20a%20RFP.pdf?csf=1&web=1&e=3VHN04' target='_blank'>Acessar Documento do Processo</a>" },
+            gestaoProblemas: { title: "Gestão de Problemas", text: "Focado em ir além do incidente. Este processo analisa a causa raiz...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            fluxoHOProcesso: { title: "Fluxo de Home Office", text: "Processo que gerencia a logística e segurança dos colaboradores em trabalho remoto...<br><br><a href='https://elocontactcenter.sharepoint.com/:b:/r/sites/FILE-CLOUD-GRUPOELO/FTPTIELO/SUPORTE/Processo%20de%20TI/Processo%20do%20Fluxo%20de%20Home%20Office.pdf?csf=1&web=1&e=jb7mq2' target='_blank'>Acessar Documento do Processo</a>" },
+            gmud: { title: "Gestão de Mudanças (GMUD)", text: "Processo que garante que todas as alterações no ambiente de TI sejam registradas...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            gestaoFornecedores: { title: "Gestão de Fornecedores", text: "Procedimento para avaliar e gerenciar o relacionamento com fornecedores...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            baseConhecimento: { title: "Base de Conhecimentos", text: "Define como criar, revisar e publicar artigos na base de conhecimento...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            reembolso: { title: "Solicitação de Reembolso", text: "Fluxo para que os colaboradores solicitem reembolso por despesas de viagens...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            lgpd: { title: "LGPD", text: "Conjunto de processos e políticas para garantir que a empresa esteja em conformidade com a Lei Geral de Proteção de Dados...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            gestaoEscalas: { title: "Gestão de Escalas", text: "Processo para definir e comunicar as escalas de plantão da equipe de TI...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" },
+            ocorrenciaPonto: { title: "Análise de Ocorrência de Pontos", text: "Procedimento para que colaboradores abram chamados solicitando a análise de inconsistências...<br><br><a href='#' target='_blank'>Acessar Documento do Processo</a>" }
+        };
+        function openProcessModal(key) { if (processData[key]) { openInfoModal(processData[key].title, processData[key].text); } }
+
+        // Lógica da Barra Lateral (Sidebar)
+        const sidebar = document.getElementById("sidebar"), overlay = document.getElementById("overlay");
+        const openSidebar = () => { sidebar.classList.add("active"); overlay.classList.add("active"); }
+        const closeSidebar = () => { sidebar.classList.remove("active"); overlay.classList.remove("active"); }
+        document.querySelectorAll('.sidebar .sidebar-item > a').forEach(item => {
+            item.addEventListener('click', function (event) {
+                event.preventDefault();
+                this.parentElement.classList.toggle('active');
+            });
+        });
+
+        // Lógica da Barra de Busca
+        function filterGrid(inputId, itemSelector, textSelector, displayType) {
+            const input = document.getElementById(inputId);
+            const filter = input.value.toLowerCase();
+            const items = document.querySelectorAll(itemSelector);
+
+            items.forEach(item => {
+                const textElement = item.querySelector(textSelector);
+                if (textElement) {
+                    const text = textElement.textContent.toLowerCase();
+                    if (text.includes(filter)) {
+                        item.style.display = displayType;
+                    } else {
+                        item.style.display = "none";
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

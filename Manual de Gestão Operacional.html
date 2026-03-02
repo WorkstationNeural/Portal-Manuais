@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Gestão Operacional</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        /* Estilos gerais - PALETA DE CORES */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #096f8e;
+            background: linear-gradient(135deg, #096f8e, #075971);
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: #075971;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            border-bottom: 5px solid #0ca5c7;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-link img {
+            height: 80px;
+            width: auto;
+            border: 0;
+            cursor: pointer;
+        }
+
+        .header-title h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        .header-title p {
+            margin: 0;
+            color: #cccccc;
+        }
+
+        .logo-spacer {
+            width: 220px;
+        }
+
+        /* Navegação por Abas */
+        nav {
+            background-color: #075971;
+            padding: 0 10px;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .tab-button {
+            background-color: transparent;
+            border: none;
+            color: #f0f0f0;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s, color 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            background-color: #0ca5c7;
+            color: white;
+        }
+
+        .tab-button.active {
+            background-color: #096f8e;
+            color: white;
+            border-bottom: 3px solid white;
+        }
+
+        .tab-button i {
+            margin-right: 8px;
+        }
+
+        /* Conteúdo principal e das abas */
+        main {
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Estilo dos Cards */
+        .card {
+            background: linear-gradient(135deg, #075971, #064b5f);
+            border-radius: 8px;
+            border: 1px solid #0ca5c7;
+            box-shadow: none;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: transform 0.5s, opacity 0.5s;
+            opacity: 0;
+            transform: translateY(30px);
+            /* Para animação de entrada */
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(12, 165, 199, 0.5);
+        }
+
+        .card-header {
+            background-color: transparent;
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #0ca5c7;
+        }
+
+        .card-header i {
+            margin-right: 15px;
+        }
+
+        .card-body {
+            padding: 20px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .card-body h3 {
+            color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #096f8e;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-top: none;
+            font-size: 1.2em;
+        }
+
+        .card-body h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .card-body h3 i {
+            margin-right: 10px;
+            color: #f0f0f0;
+        }
+
+        .card-body .intro-text {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .card-body ul {
+            text-align: left;
+        }
+
+        /* Grade para Itens Visuais */
+        .item-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .card-body .intro-text+.item-grid {
+            margin-top: 30px;
+        }
+
+        .card-body .item-grid+h3 {
+            margin-top: 40px;
+        }
+
+        .card-body h3+.status-flow-container {
+            margin-top: -5px;
+        }
+
+        .grid-item {
+            background: linear-gradient(135deg, #096f8e, #08637e);
+            border: 1px solid #0ca5c7;
+            border-radius: 8px;
+            flex: 1 1 250px;
+            max-width: 400px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .grid-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 20px rgba(12, 165, 199, 0.5);
+        }
+
+        .grid-item i {
+            font-size: 3em;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .grid-item h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.2em;
+            color: white;
+            padding-top: 10px;
+        }
+
+        .grid-item p {
+            font-size: 0.9em;
+            color: #cccccc;
+            line-height: 1.5;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        /* Lista de SLAs e Passo a Passo */
+        .sla-list,
+        .step-by-step-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .sla-list li,
+        .step-by-step-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            background-color: #08637e;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .sla-list i {
+            font-size: 1.2em;
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sla-list .high {
+            color: #e53e3e;
+        }
+
+        .sla-list .medium {
+            color: #dd6b20;
+        }
+
+        .sla-list .low {
+            color: #3182ce;
+        }
+
+        .sla-note {
+            font-size: 0.8em;
+            color: #cccccc;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .step-by-step-list li i {
+            font-size: 1.5em;
+            color: #0ca5c7;
+            margin-right: 15px;
+        }
+
+        /* Caixa de Atenção (Body) */
+        .attention-box {
+            background-color: rgba(255, 202, 58, 0.1);
+            border-left: 5px solid #ffca3a;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .attention-box p {
+            margin: 0 0 10px 0;
+        }
+
+        /* Caixa de Alerta (Modal) - Estilo igual à imagem */
+        .modal-alert {
+            background-color: #164e63;
+            border-left: 5px solid #ffca3a;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .modal-alert strong {
+            color: white;
+        }
+
+        /* Tabelas */
+        .card-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .card-body th,
+        .card-body td {
+            border: 1px solid #0ca5c7;
+            padding: 10px 15px;
+            text-align: left;
+        }
+
+        .card-body th {
+            background-color: #096f8e;
+        }
+
+        .card-body td:first-child {
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Botão de Ação Principal */
+        .action-button {
+            display: inline-block;
+            background-color: #0ca5c7;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .action-button:hover {
+            background-color: #0dafd4;
+            transform: scale(1.05);
+        }
+
+        /* Barra Lateral com Efeito de Vidro */
+        .sidebar {
+            height: 100%;
+            width: 280px;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            left: 0;
+            background-color: rgba(7, 89, 113, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: 0.5s;
+            transform: translateX(-100%);
+            padding-top: 60px;
+            border-right: 3px solid #0ca5c7;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar .sidebar-item a,
+        .sidebar .submenu a {
+            padding: 10px 15px 10px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #cccccc;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar .sidebar-item>a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sidebar a:hover {
+            color: #ffffff;
+            background-color: #096f8e;
+        }
+
+        .sidebar .submenu {
+            list-style: none;
+            padding-left: 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+        }
+
+        .sidebar .sidebar-item.active .submenu {
+            max-height: 500px;
+        }
+
+        .open-btn {
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            padding: 0 15px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Rodapé */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #075971;
+            border-top: 3px solid #0ca5c7;
+            font-size: 0.9em;
+            color: #cccccc;
+            margin-top: 40px;
+        }
+
+        /* Estilos do Pop-up (Modal) com Efeito de Vidro */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeInModal 0.4s;
+        }
+
+        .modal-content {
+            background-color: rgba(7, 89, 113, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            margin: 10% auto;
+            padding: 30px;
+            border: 1px solid rgba(12, 165, 199, 0.5);
+            border-radius: 8px;
+            width: 80%;
+            max-width: 700px;
+            position: relative;
+            animation: slideIn 0.5s;
+        }
+
+        .modal .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 38px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+        }
+
+        .modal .close-button:hover,
+        .modal .close-button:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        #modalTitle {
+            margin-top: 0;
+            color: white;
+        }
+
+        #modalContent {
+            line-height: 1.7;
+        }
+
+        #modalContent a {
+            color: #0ca5c7;
+            text-decoration: underline;
+        }
+
+        #modalContent a:hover {
+            color: white;
+        }
+
+        #modalContent ul {
+            padding-left: 25px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        #modalContent li {
+            margin-bottom: 8px;
+        }
+
+        /* --- ESTILOS DO FLUXO DE STATUS --- */
+        .status-flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .status-card {
+            background: #08637e;
+            border-radius: 8px;
+            border-top: 5px solid transparent;
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            transition: transform 0.3s;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .status-card i {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .status-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .status-card p {
+            font-size: 0.85em;
+            color: #cccccc;
+            margin: 0;
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: #0ca5c7;
+            opacity: 0.7;
+        }
+
+        .status-card.status-novo {
+            border-top-color: #3a86ff;
+        }
+
+        .status-card.status-novo i {
+            color: #3a86ff;
+        }
+
+        .status-card.status-atendimento {
+            border-top-color: #ff9f1c;
+        }
+
+        .status-card.status-atendimento i {
+            color: #ff9f1c;
+        }
+
+        .status-card.status-pendente {
+            border-top-color: #ffca3a;
+        }
+
+        .status-card.status-pendente i {
+            color: #ffca3a;
+        }
+
+        .status-card.status-solucionado {
+            border-top-color: #2ec4b6;
+        }
+
+        .status-card.status-solucionado i {
+            color: #2ec4b6;
+        }
+
+        @media (max-width: 992px) {
+            .status-flow-container {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+                margin: 15px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Estrutura da Barra Lateral -->
+    <aside id="sidebar" class="sidebar">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="#">
+                    <i class="fas fa-address-book"></i> Contatos Rápidos
+                </a>
+                <ul class="submenu">
+                    <li><a href="#" onclick="openContactModal('telefones'); return false;">Telefones de Suporte</a></li>
+                    <li><a href="#" onclick="openContactModal('email'); return false;">E-mail de Suporte</a></li>
+                    <li><a href="http://helpdesk/front/central.php" target="_blank">Link para o GLPI</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+    <div id="overlay" class="overlay" onclick="closeSidebar()"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="open-btn" onclick="openSidebar()">&#9776;</button>
+            <a href="#" class="logo-link" onclick="openTab(event, 'inicio'); return false;">
+                <img src="https://i.ibb.co/rfR0ff5r/image-Photoroom.png" alt="Logo Neural Serviços Conectados">
+            </a>
+        </div>
+        <div class="header-title">
+            <h1>Manual de Gestão Operacional</h1>
+            <p>Central de Serviços Compartilhados - Neural</p>
+        </div>
+        <div class="logo-spacer"></div>
+    </header>
+
+    <nav>
+        <button class="tab-button" onclick="openTab(event, 'inicio')"><i class="fas fa-home"></i> Início</button>
+        <button class="tab-button" onclick="openTab(event, 'solicitando-suporte')"><i class="fas fa-headset"></i>
+            Solicitando Suporte</button>
+        <button class="tab-button" onclick="openTab(event, 'como-abrir-chamados')"><i class="fas fa-clipboard-list"></i>
+            Como Abrir Chamados</button>
+        <button class="tab-button" onclick="openTab(event, 'entendendo-atendimento')"><i class="fas fa-tasks"></i>
+            Entendendo o Atendimento</button>
+        <button class="tab-button" onclick="openTab(event, 'eventos-criticos')"><i class="fas fa-bullhorn"></i> Eventos
+            Críticos</button>
+        <button class="tab-button" onclick="openTab(event, 'home-office')"><i class="fas fa-house-user"></i> Modalidade
+            Home Office</button>
+        <button class="tab-button" onclick="openTab(event, 'politicas-seguranca')"><i class="fas fa-shield-alt"></i>
+            Políticas de Segurança</button>
+        <button class="tab-button" onclick="openTab(event, 'organograma')"><i class="fas fa-sitemap"></i>
+            Organograma</button>
+    </nav>
+
+    <main>
+        <div id="inicio" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-rocket"></i>
+                    <h2>Bem-vindo(a) ao seu Guia de TI!</h2>
+                </div>
+                <div class="card-body">
+                    <p>Olá, colaborador(a)! Este manual foi criado para ser seu ponto de referência central para todas
+                        as suas interações com o departamento de Tecnologia da Informação (TI) e Gestão de Acessos (GA).
+                    </p>
+                    <p>Seja você um novo gestor buscando entender os fluxos ou um colaborador precisando de ajuda, aqui
+                        você encontrará o passo a passo para solicitar suporte, entender nossos prazos e conhecer as
+                        políticas de segurança que protegem nossa empresa. Nosso objetivo é tornar sua experiência com o
+                        TI a mais clara e eficiente possível.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-sitemap"></i>
+                    <h2>Quem é a Equipe de TI?</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Para melhor atendê-lo, nossa equipe é dividida em dois níveis de suporte.
+                        Conhecer a função de cada um ajuda a entender o fluxo do seu chamado.</p>
+                    <div class="item-grid">
+                        <div class="grid-item">
+                            <i class="fas fa-headset"></i>
+                            <h4>Suporte N1: Apoio Imediato</h4>
+                            <p>É a equipe de primeiro contato, responsável por registrar seu chamado e resolver as
+                                solicitações mais comuns, como problemas de senha, configuração de e-mail e falhas de
+                                software. A equipe é composta por Helpdesk, Servicedesk e Gestão de Acessos.</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-cogs"></i>
+                            <h4>Suporte N2: Analistas e Especialistas</h4>
+                            <p>Quando um problema é mais complexo, como uma falha de rede, um problema de servidor ou
+                                uma ameaça de segurança, a equipe N1 encaminha o chamado para os especialistas do N2,
+                                que possuem conhecimento aprofundado para investigar e solucionar a causa raiz.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="solicitando-suporte" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-question-circle"></i>
+                    <h2>O que é um Chamado?</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Para organizar as solicitações, dividimos os chamados em duas categorias
+                        principais. Entender a diferença nos ajuda a atendê-lo melhor.</p>
+                    <div class="item-grid">
+                        <div class="grid-item">
+                            <i class="fas fa-fire"></i>
+                            <h4>Incidente</h4>
+                            <p>Um incidente é uma interrupção inesperada de um serviço. Em outras palavras: <strong>algo
+                                    que estava funcionando e parou de funcionar</strong>. Exemplos: "minha internet
+                                caiu", "não consigo acessar o sistema X", "meu computador não liga".</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-plus-circle"></i>
+                            <h4>Requisição</h4>
+                            <p>Uma requisição é um pedido para algo novo. <strong>É uma solicitação de um serviço,
+                                    acesso ou equipamento que você ainda não tem</strong>. Exemplos: "preciso de acesso
+                                à pasta Y", "solicito a instalação do software Z", "preciso de um novo mouse".</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-laptop-code"></i>
+                    <h2>Canais Oficiais para Solicitações</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Para garantir que sua solicitação seja registrada e atendida dentro do prazo,
+                        utilize sempre nossos canais oficiais:</p>
+                    <div class="item-grid">
+                        <div class="grid-item">
+                            <i class="fas fa-ticket-alt"></i>
+                            <h4>Abertura de Chamado via GLPI</h4>
+                            <p>Este é o canal <strong>preferencial</strong> para todas as solicitações. O GLPI é nossa
+                                ferramenta de gestão de chamados, onde tudo fica registrado e rastreado. Ele garante que
+                                sua solicitação não se perca e seja direcionada para a equipe correta.</p>
+                            <a href="http://helpdesk/front/central.php" target="_blank" class="action-button">ABRIR
+                                CHAMADO NO GLPI</a>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-envelope"></i>
+                            <h4>Formalização por E-mail</h4>
+                            <p>Em casos específicos, como solicitações de acesso que exigem aprovação formal de um
+                                gestor, o pedido pode ser feito via e-mail. Sempre inclua o máximo de detalhes possível,
+                                como nome completo, login de rede, qual acesso é necessário e a justificativa.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="como-abrir-chamados" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-clipboard-list"></i>
+                    <h2>Guia Prático: Abertura de Chamados no GLPI</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Criamos este guia para simplificar o processo, promover a padronização e
+                        garantir que sua solicitação contenha todas as informações necessárias para um atendimento
+                        rápido e eficaz.</p>
+
+                    <h3>Critérios para Abertura de Chamado</h3>
+                    <ul class="step-by-step-list">
+                        <li><i class="fas fa-tag"></i>
+                            <div><strong>1. Defina o Tipo:</strong> No GLPI, sempre especifique se o seu chamado é um
+                                <strong>Incidente</strong> (algo quebrou) ou uma <strong>Requisição</strong> (um novo
+                                pedido).</div>
+                        </li>
+                        <li><i class="fas fa-sitemap"></i>
+                            <div><strong>2. Escolha a Categoria:</strong> Selecione a categoria que melhor descreve seu
+                                problema (ex: "Sistemas", "Rede", "Hardware"). Busque por palavras-chave para encontrar
+                                a mais adequada.</div>
+                        </li>
+                        <li><i class="fas fa-map-marker-alt"></i>
+                            <div><strong>3. Informe a Localização:</strong> Sempre preencha sua localização completa.
+                                Exemplo: "São Luís > Operação > Presencial > Europ".</div>
+                        </li>
+                        <li><i class="fas fa-file-alt"></i>
+                            <div><strong>4. Preencha a Descrição:</strong> Utilize o campo "Descrição" para detalhar o
+                                problema, seguindo o modelo que aparece automaticamente e preenchendo todos os dados
+                                obrigatórios solicitados.</div>
+                        </li>
+                        <li><i class="fas fa-paperclip"></i>
+                            <div><strong>5. Anexe Evidências:</strong> Sempre que possível, inclua "Anexos" (prints da
+                                tela do erro, fotos ou documentos) que ajudem a ilustrar o problema.</div>
+                        </li>
+                    </ul>
+
+                    <h3>Pontos de Atenção</h3>
+                    <div class="attention-box">
+                        <p><strong>Sobre as Categorias:</strong> Busque sempre pela categoria exata. Se não encontrar,
+                            utilize o filtro mais próximo. A equipe de Suporte poderá reclassificar se necessário.</p>
+                        <p><strong>Sobre a Descrição:</strong> Não apague os textos informativos do modelo. Preencha
+                            apenas as informações obrigatórias solicitadas para que o chamado seja atendido da forma
+                            mais célere.</p>
+                    </div>
+
+                    <h3>Por que pedimos certos dados?</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dado Solicitado</th>
+                                <th>Utilidade</th>
+                                <th>Obrigatoriedade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>* Endereço IP</td>
+                                <td>Serve para registro e identificação da máquina na rede.</td>
+                                <td>Obrigatório (Apenas Presencial)</td>
+                            </tr>
+                            <tr>
+                                <td>* Hostname</td>
+                                <td>Alternativa para Suporte remoto.</td>
+                                <td>Obrigatório (Presencial e Home Office)</td>
+                            </tr>
+                            <tr>
+                                <td>* Anydesk</td>
+                                <td>Necessário para Suporte remoto.</td>
+                                <td>Obrigatório (Apenas Home Office)</td>
+                            </tr>
+                            <tr>
+                                <td>* Matrícula</td>
+                                <td>Necessário para controle de reincidências e registro.</td>
+                                <td>Obrigatório (Presencial e Home Office)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="entendendo-atendimento" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-tasks"></i>
+                    <h2>Como seu Chamado é Tratado?</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Depois de aberto, seu chamado passa por um fluxo para garantir a melhor
+                        priorização e resolução. Entenda os conceitos-chave:</p>
+                    <div class="item-grid">
+                        <div class="grid-item">
+                            <i class="fas fa-sort-amount-up"></i>
+                            <h4>Impacto e Urgência = Prioridade</h4>
+                            <p>A prioridade do seu chamado é calculada com base no <strong>Impacto</strong> (quantos
+                                usuários são afetados) e na <strong>Urgência</strong> (qual a criticidade do serviço
+                                para a operação). Um sistema fora do ar para toda a operação (alto impacto) tem
+                                prioridade maior que um mouse quebrado para um usuário (baixo impacto).</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-hourglass-half"></i>
+                            <h4>Prazo de Atendimento (Incidentes)</h4>
+                            <ul class="sla-list">
+                                <li><i class="fas fa-exclamation-circle high"></i> <strong>Alta prioridade:</strong> 2
+                                    horas</li>
+                                <li><i class="fas fa-exclamation-triangle medium"></i> <strong>Média
+                                        prioridade:</strong> 10 horas</li>
+                                <li><i class="fas fa-info-circle low"></i> <strong>Baixa prioridade:</strong> 24 horas
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h4>Prazo de Atendimento (Requisições)</h4>
+                            <ul class="sla-list">
+                                <li><i class="fas fa-exclamation-circle high"></i> <strong>Alta prioridade:</strong> 2
+                                    dias (Aprox.)</li>
+                                <li><i class="fas fa-exclamation-triangle medium"></i> <strong>Média
+                                        prioridade:</strong> 7 dias (Aprox.)</li>
+                                <li><i class="fas fa-info-circle low"></i> <strong>Baixa prioridade:</strong> 10 dias
+                                    (Aprox.)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="sla-note"><strong>NOTA:</strong> O prazo de atendimento pode variar conforme a
+                        complexidade do chamado e o volume de demandas em andamento.</p>
+
+                    <h3>Definição de Impacto</h3>
+                    <div class="item-grid">
+                        <div class="grid-item">
+                            <i class="fas fa-bomb high"></i>
+                            <h4>Alto</h4>
+                            <p>Mais de 75% da operação total está sendo impactada ou interrupção total dos serviços
+                                operacionais.<br><br><strong>CONTRATO LOCTK2602-0004</strong></p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-exclamation-triangle medium"></i>
+                            <h4>Médio</h4>
+                            <p>Entre 30% e 75% da operação total está sendo impactada ou interrupção nas
+                                operações/serviços que tenham algum impacto negativo ou degradado, contudo, não impeçam
+                                o seu funcionamento.</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-info-circle low"></i>
+                            <h4>Baixo</h4>
+                            <p>Menos de 30% da operação total está sendo impactada ou alguma interrupção pontual das
+                                operações ou serviços, com baixo impacto em reduzido número de equipamentos.</p>
+                        </div>
+                    </div>
+
+                    <h3>O Ciclo de Vida de um Chamado</h3>
+                    <div class="status-flow-container">
+                        <div class="status-card status-novo">
+                            <i class="fas fa-plus-circle"></i>
+                            <h4>Novo</h4>
+                            <p>Seu chamado foi recebido e aguarda atribuição.</p>
+                        </div>
+                        <i class="fas fa-arrow-right flow-arrow"></i>
+                        <div class="status-card status-atendimento">
+                            <i class="fas fa-cogs"></i>
+                            <h4>Em Atendimento</h4>
+                            <p>Um técnico está trabalhando na sua solicitação.</p>
+                        </div>
+                        <i class="fas fa-arrow-right flow-arrow"></i>
+                        <div class="status-card status-pendente">
+                            <i class="fas fa-pause-circle"></i>
+                            <h4>Pendente</h4>
+                            <p>Aguardando uma resposta sua ou de terceiros.</p>
+                        </div>
+                        <i class="fas fa-arrow-right flow-arrow"></i>
+                        <div class="status-card status-solucionado">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Solucionado</h4>
+                            <p>Resolvido e aguardando sua aprovação para fechar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="eventos-criticos" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-bullhorn"></i>
+                    <h2>Processo de Eventos Críticos</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Um Evento Crítico é um incidente de alto impacto que afeta um grande número de
+                        usuários (50% a 100% de uma operação). A comunicação é centralizada em um grupo de WhatsApp para
+                        garantir agilidade.</p>
+                    <div class="item-grid">
+                        <div class="grid-item">
+                            <i class="fas fa-file-medical-alt"></i>
+                            <h4>O Que Reportar?</h4>
+                            <p>Apenas incidentes massivos. Exemplos: queda de sistema para toda a equipe, falha geral de
+                                telefonia, indisponibilidade de acesso à rede para múltiplos usuários.</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-user-tie"></i>
+                            <h4>Quem Reporta?</h4>
+                            <p>O reporte deve ser feito exclusivamente por Coordenadores, Gerentes ou Diretores da
+                                operação, após confirmarem a massividade do evento.</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-sitemap"></i>
+                            <h4>O Que Acontece Depois?</h4>
+                            <p>O time de TI avalia o reporte, faz a triagem para a equipe N2 responsável e, se
+                                necessário, aciona fornecedores ou clientes. A comunicação sobre o andamento é feita no
+                                próprio grupo.</p>
+                        </div>
+                    </div>
+                    <a href="http://portalelo.elocontactcenter.com.br/download/manuais/Processo%20de%20Atendimento%20a%20Eventos%20Cr%C3%ADticos.pdf"
+                        target="_blank" class="action-button">Acessar Documento Oficial</a>
+                </div>
+            </div>
+        </div>
+        <div id="home-office" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-house-user"></i>
+                    <h2>Modalidade Home Office</h2>
+                </div>
+                <div class="card-body">
+                    <p class="intro-text">Fluxo definido para saída, retorno, troca casada e desligamento de
+                        colaboradores em regime de Home Office. Este processo garante o controle efetivo dos
+                        equipamentos e o cumprimento dos prazos.</p>
+
+                    <div class="item-grid">
+                        <div class="grid-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <h4>Saída para Home Office</h4>
+                            <p>Abertura via GLPI pelo Supervisor com teste de internet (mín 50Mb/s). Envolve aprovação
+                                do Planejamento, validação técnica da TI e aditivo contratual do DP. Retirada na TI após
+                                aprovação.</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <h4>Retorno ao Presencial</h4>
+                            <p>Solicitação via GLPI. Planejamento valida espaço físico. DP formaliza retorno.
+                                Equipamentos devem ser devolvidos na TI para vistoria e baixa no sistema CETI.</p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-exchange-alt"></i>
+                            <h4>Troca Casada</h4>
+                            <p>Troca simultânea entre operadores do mesmo turno/segmento. Validação do Planejamento
+                                necessária. TI avalia e realiza a troca física dos equipamentos entre os colaboradores.
+                            </p>
+                        </div>
+                        <div class="grid-item">
+                            <i class="fas fa-user-times"></i>
+                            <h4>Desligamento</h4>
+                            <p>Abertura de chamado de desligamento. Devolução imediata dos equipamentos na TI. DP
+                                verifica pendências no sistema CETI antes da rescisão. Prazo de devolução: 72h.</p>
+                        </div>
+                    </div>
+
+                    <h3>Prazos e SLAs</h3>
+                    <ul class="sla-list">
+                        <li><i class="fas fa-clock medium"></i> <strong>Planejamento:</strong> 72h úteis para avaliação.
+                        </li>
+                        <li><i class="fas fa-tools medium"></i> <strong>TI (Liberação/Recebimento):</strong> 72h úteis.
+                        </li>
+                        <li><i class="fas fa-exclamation-circle high"></i> <strong>Retirada/Devolução:</strong> Prazo
+                            máximo de 72h úteis após aprovação.</li>
+                    </ul>
+
+                    <h3>Pontos de Atenção</h3>
+                    <div class="attention-box">
+                        <p><strong><i class="fas fa-wifi"></i> Internet:</strong> Obrigatório uso de cabo de rede (Wi-Fi
+                            não permitido).</p>
+                        <p><strong><i class="fas fa-desktop"></i> BYOD:</strong> Computador pessoal deve ter Windows 10
+                            Pro ou superior e antivírus.</p>
+                        <p><strong><i class="fas fa-gavel"></i> Responsabilidade:</strong> O transporte dos equipamentos
+                            é responsabilidade da operação/colaborador. Danos ou extravios serão descontados em folha.
+                        </p>
+                    </div>
+
+                    <a href="http://portalelo.elocontactcenter.com.br/download/Manuais/Processo%20do%20Fluxo%20de%20Home%20Office.pdf"
+                        target="_blank" class="action-button">Acessar Documento Oficial</a>
+                </div>
+            </div>
+        </div>
+        <div id="politicas-seguranca" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-shield-alt"></i>
+                    <h2>Políticas de Segurança: Sua Responsabilidade</h2>
+                </div>
+                <div class="card-body">
+                    <p>A segurança da informação é um esforço conjunto. A equipe de TI trabalha para proteger nossos
+                        sistemas, mas sua colaboração é fundamental. Siga sempre estas boas práticas:</p>
+                    <ul>
+                        <li><strong>Senhas Fortes:</strong> Nunca compartilhe sua senha. Utilize combinações de letras
+                            maiúsculas, minúsculas, números e símbolos.</li>
+                        <li><strong>Cuidado com Phishing:</strong> Desconfie de e-mails suspeitos que pedem informações
+                            confidenciais ou solicitam cliques em links estranhos. Na dúvida, abra um chamado para o TI.
+                        </li>
+                        <li><strong>Uso de Software:</strong> A instalação de qualquer software deve ser solicitada e
+                            realizada exclusivamente pela equipe de TI. A instalação de programas não homologados pode
+                            comprometer a segurança.</li>
+                        <li><strong>Dispositivos Removíveis:</strong> Tenha cuidado ao usar pen drives e HDs externos de
+                            origem desconhecida.</li>
+                        <li><strong>Bloqueio de Tela:</strong> Sempre bloqueie seu computador (Tecla do Windows + L) ao
+                            se ausentar da sua mesa.</li>
+                    </ul>
+                    <a href="http://portalelo.elocontactcenter.com.br/download/Pol%C3%ADtica%20de%20Seguran%C3%A7a%20da%20Informa%C3%A7%C3%A3o.pdf"
+                        target="_blank" class="action-button">Acessar Documento Oficial</a>
+                </div>
+            </div>
+        </div>
+        <div id="organograma" class="tab-content">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-sitemap"></i>
+                    <h2>Estrutura da Equipe de T.I.</h2>
+                </div>
+                <div class="card-body">
+                    <img src="https://i.ibb.co/MDD2j13P/ORGANOGRAMA.png" alt="ORGANOGRAMA" border="0"
+                        class="organogram-image">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Neural Serviços Conectados. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Estrutura do Pop-up (Modal) -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeInfoModal()">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // Lógica de Abas
+        function openTab(evt, tabName) {
+            let i, tabContent, tabButtons;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) { tabContent[i].classList.remove("active"); }
+            tabButtons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabButtons.length; i++) { tabButtons[i].classList.remove("active"); }
+            setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
+            if (evt.currentTarget.classList.contains('tab-button')) { evt.currentTarget.classList.add("active"); }
+            else { document.querySelector('button[onclick*="\'inicio\'"]').classList.add("active"); }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelector('.tab-button').classList.add('active');
+            document.querySelector('.tab-content').classList.add('active');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            const cardsToAnimate = document.querySelectorAll('.card');
+            cardsToAnimate.forEach(card => observer.observe(card));
+        });
+
+        const modal = document.getElementById("infoModal"), modalTitle = document.getElementById("modalTitle"), modalContent = document.getElementById("modalContent");
+        function openInfoModal(title, text) { modalTitle.textContent = title; modalContent.innerHTML = text; modal.style.display = "block"; }
+        function closeInfoModal() { modal.style.display = "none"; }
+        window.onclick = (event) => { if (event.target == modal) { closeInfoModal(); } }
+
+        // Lógica da Barra Lateral (Sidebar)
+        const sidebar = document.getElementById("sidebar"), overlay = document.getElementById("overlay");
+        const openSidebar = () => { sidebar.classList.add("active"); overlay.classList.add("active"); }
+        const closeSidebar = () => { sidebar.classList.remove("active"); overlay.classList.remove("active"); }
+        document.querySelectorAll('.sidebar .sidebar-item > a').forEach(item => {
+            item.addEventListener('click', function (event) {
+                event.preventDefault();
+                this.parentElement.classList.toggle('active');
+            });
+        });
+
+        // Dados para Pop-ups da Barra Lateral
+        const contactData = {
+            telefones: {
+                title: "Telefones de Suporte de TI",
+                text: `<div class="modal-alert">
+                            <strong>Atenção:</strong> O contato telefônico com a liderança deve ser feito apenas para escalonamentos e <strong>após</strong> a abertura de um chamado no GLPI.
+                       </div>
+                       <h3>Primeiro nível:</h3>
+                       <ul><li>(98) 3311-6135 - Técnico de plantão no fim de semana</li></ul>
+                       <hr style="border-color: #0ca5c7; margin: 15px 0;">
+                       <h3>Coordenadores:</h3>
+                       <ul>
+                           <li>(98) 99100-5619 - Ilclemá Vilela</li>
+                           <li>(98) 99219-1102 – John Ueslei</li>
+                           <li>(11) 99884-9396 – Guilherme Martins</li>
+                       </ul>
+                       <hr style="border-color: #0ca5c7; margin: 15px 0;">
+                       <h3>Gerentes:</h3>
+                       <ul>
+                           <li>(21) 99680-4084 - Marcelo Almeida</li>
+                           <li>(98) 98402-4459 - Adson Costa</li>
+                       </ul>`
+            },
+            email: {
+                title: "E-mail de Suporte",
+                text: `Para formalizações que exigem aprovações, utilize os e-mails abaixo. Lembre-se que o canal preferencial para solicitações é sempre o GLPI.
+                       <ul>
+                           <li><b>Suporte Geral Neural:</b> <strong>suporte@neuralcsc.com</strong></li>
+                       </ul>
+                       <hr style="border-color: #0ca5c7; margin: 15px 0;">
+                       <b>Suporte Especializado:</b>
+                       <ul>
+                           <li><b>Gestão de Acessos:</b> <strong>gestaodeacessos@neuralcsc.com</strong></li>
+                           <li><b>Telecom:</b> <strong>telecom@neuralcsc.com</strong></li>
+                           <li><b>Segurança da Informação:</b> <strong>gsi@neuralcsc.com</strong></li>
+                           <li><b>Infraestrutura:</b> <strong>infra.ti@neuralcsc.com</strong></li>
+                       </ul>`
+            }
+        };
+        function openContactModal(key) { if (contactData[key]) { openInfoModal(contactData[key].title, contactData[key].text); } }
+    </script>
+
+</body>
+
+</html>
